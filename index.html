@@ -1,0 +1,134 @@
+<!-- <html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<style>
+		body {
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			background-color: #BBB;
+		}
+		#info {
+			position	: absolute;
+			top		: 0px;
+			width		: 100%;
+			padding		: 5px;
+			text-align	: center;
+		}
+		#info a {
+			color		: #66F;
+			text-decoration	: none;
+		}
+		#info a:hover {
+			text-decoration	: underline;
+		}
+		#container {
+			width		: 100%;
+			height		: 100%;
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			-webkit-user-select	: none;
+			-moz-user-select	: none;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+		<div id="info">
+
+			<span id="result"></span>
+		</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script src="/static/js/virtualjoystick.js"></script>
+		<script>
+
+			var left,right;
+
+			function tankdrive(x, y) {
+			    // first Compute the angle in deg
+
+			    // First hypotenuse
+			    var z = Math.sqrt(x*x + y*y);
+			    // angle in radians
+			    rad = Math.acos(Math.abs(x)/z);
+			    // and in degrees
+			    angle = rad*180/Math.PI;
+
+			    // Now angle indicates the measure of turn
+			    // Along a straight line, with an angle o, the turn co-efficient is same
+			    // this applies for angles between 0-90, with angle 0 the co-eff is -1
+			    // with angle 45, the co-efficient is 0 and with angle 90, it is 1
+			    var tcoeff = -1 + (angle/90)*2;
+			    var turn = tcoeff * Math.abs(Math.abs(y) - Math.abs(x));
+			    turn = Math.round(turn*100)/100;
+
+			    // And max of y or x is the movement
+			    var move = Math.max(Math.abs(y),Math.abs(x));
+
+			    // First and third quadrant
+			    if( (x >= 0 && y >= 0) || (x < 0 &&  y < 0) ) {
+			        left = move;
+			        right = turn;
+			    } else {
+			        right = move;
+			        left = turn;
+			    }
+
+				// if( y < 0 ) {
+				// 	tmp = left;
+				// 	left = right;
+				// 	right = tmp;
+				// }
+
+			    // Reverse polarity
+			    if(y < 0) {
+			        left = -left;
+			        right = -right;
+			    }
+
+				if (isNaN(left)) {
+					left = 0;
+				}
+				if (isNaN(right)){
+					right = 0;
+				}
+
+				left*=2;
+				right*=2;
+
+			}
+
+			var _deltaX = 0, _deltaY = 0;
+
+			var joystick = new VirtualJoystick({
+			    mouseSupport: true,
+			    stationaryBase: true,
+			    baseX: 200,
+			    baseY: 200,
+			    limitStickTravel: true,
+			    stickRadius: 50
+			});
+
+			setInterval(function(){
+				var dx = joystick.deltaX();
+				var dy = joystick.deltaY();
+				if (dx !== _deltaX || dy !== _deltaY) {
+					tankdrive(dx, -dy)
+					var outputEl	= document.getElementById('result');
+					outputEl.innerHTML	= '<b>Result:</b> '
+					+ ' left:'+left
+					+ ' right:'+right
+
+					_deltaX = dx;
+					_deltaY = dy
+                    
+                    $.post('/control/', {'left': left, 'right': right});
+                    
+				}
+			}, 1/5 * 1000);
+		</script>
+	</body>
+</html> -->
