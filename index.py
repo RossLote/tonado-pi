@@ -65,7 +65,7 @@ class RCWebSocket(tornado.websocket.WebSocketHandler):
         global COUNT
         data = json.loads(message)
         updatePins(data['left'], data['right'])
-        print 'COUNT:', COUNT
+        print 'COUNT:', COUNT, data
         COUNT+=1
 
     def on_close(self):
