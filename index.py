@@ -62,6 +62,7 @@ class RCWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
 
     def on_message(self, message):
+        global COUNT
         data = json.loads(message)
         updatePins(data['left'], data['right'])
         print 'COUNT:', COUNT
