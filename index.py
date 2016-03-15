@@ -38,16 +38,16 @@ def updatePins(left, right):
         BACKWARD_RIGHT_PIN.ChangeDutyCycle(0)
 
     if left > 0:
-        FORWARD_RIGHT_PIN.ChangeDutyCycle(abs(left))
-        BACKWARD_RIGHT_PIN.ChangeDutyCycle(0)
+        FORWARD_LEFT_PIN.ChangeDutyCycle(abs(left))
+        BACKWARD_LEFT_PIN.ChangeDutyCycle(0)
 
     elif left < 0:
-        FORWARD_RIGHT_PIN.ChangeDutyCycle(0)
-        BACKWARD_RIGHT_PIN.ChangeDutyCycle(abs(left))
+        FORWARD_LEFT_PIN.ChangeDutyCycle(0)
+        BACKWARD_LEFT_PIN.ChangeDutyCycle(abs(left))
 
     else:
-        FORWARD_RIGHT_PIN.ChangeDutyCycle(0)
-        BACKWARD_RIGHT_PIN.ChangeDutyCycle(0)
+        FORWARD_LEFT_PIN.ChangeDutyCycle(0)
+        BACKWARD_LEFT_PIN.ChangeDutyCycle(0)
 
 
 class MainHandler(tornado.web.RequestHandler):
