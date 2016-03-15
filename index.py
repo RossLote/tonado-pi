@@ -23,6 +23,8 @@ FORWARD_LEFT_PIN.start(0)
 BACKWARD_RIGHT_PIN.start(0)
 BACKWARD_LEFT_PIN.start(0)
 
+COUNT = 0
+
 def updatePins(left, right):
 
     if right > 0:
@@ -62,6 +64,8 @@ class RCWebSocket(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         data = json.loads(message)
         updatePins(data['left'], data['right'])
+        print 'COUNT:', COUNT
+        COUNT+=1
 
     def on_close(self):
         print("WebSocket closed")
