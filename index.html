@@ -1,4 +1,4 @@
-<!-- <html>
+<html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
@@ -46,6 +46,17 @@
 		<script>
 
 			var left,right;
+
+			var loc = window.location, new_uri;
+			if (loc.protocol === "https:") {
+			    new_uri = "wss:";
+			} else {
+			    new_uri = "ws:";
+			}
+			new_uri += "//" + loc.host;
+			new_uri += loc.pathname + "controller";
+
+			var ws = new WebSocket(new_uri)
 
 			function tankdrive(x, y) {
 			    // first Compute the angle in deg
@@ -124,11 +135,11 @@
 
 					_deltaX = dx;
 					_deltaY = dy
-                    
-                    $.post('/control/', {'left': left, 'right': right});
-                    
+
+                    ws.send(JSON.stringify({'left': left, 'right': right}));
+
 				}
 			}, 1/5 * 1000);
 		</script>
 	</body>
-</html> -->
+</html>
