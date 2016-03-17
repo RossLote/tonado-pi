@@ -7,23 +7,21 @@ import json
 from RPi import GPIO as pi
 
 
-PINS = [4, 17, 27, 22]
+PINS = [17, 18, 22, 23]
 
 pi.setmode(pi.BCM)
 for pin in PINS:
     pi.setup(pin, pi.OUT)
 
-FORWARD_RIGHT_PIN = pi.PWM(PINS[0], 100)
-FORWARD_LEFT_PIN = pi.PWM(PINS[1], 100)
-BACKWARD_RIGHT_PIN = pi.PWM(PINS[2], 100)
-BACKWARD_LEFT_PIN = pi.PWM(PINS[3], 100)
+FORWARD_LEFT_PIN = pi.PWM(PINS[0], 100)
+BACKWARD_LEFT_PIN = pi.PWM(PINS[1], 100)
+FORWARD_RIGHT_PIN = pi.PWM(PINS[2], 100)
+BACKWARD_RIGHT_PIN = pi.PWM(PINS[3], 100)
 
-FORWARD_RIGHT_PIN.start(0)
 FORWARD_LEFT_PIN.start(0)
-BACKWARD_RIGHT_PIN.start(0)
 BACKWARD_LEFT_PIN.start(0)
-
-COUNT = 0
+FORWARD_RIGHT_PIN.start(0)
+BACKWARD_RIGHT_PIN.start(0)
 
 def updatePins(left, right):
 
@@ -62,11 +60,8 @@ class RCWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
 
     def on_message(self, message):
-        global COUNT
         data = json.loads(message)
         updatePins(data['left'], data['right'])
-        print 'COUNT:', COUNT, data
-        COUNT+=1
 
     def on_close(self):
         print("WebSocket closed")
